@@ -35,6 +35,7 @@ public class GlavniProzor extends JFrame {
 	 * Create the frame.
 	 */
 	public GlavniProzor() {
+		setResizable(false);
 		setTitle("Menjacnica");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -92,13 +93,13 @@ public class GlavniProzor extends JFrame {
 		btnKonvertuj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				double kurs = GUIKontroler.vratiKurs(preuzmiIzComboBox());
-				System.out.println(kurs);
 				int iznos = Integer.parseInt(textField.getText());
 				if(kurs==0){
 					GUIKontroler.ispisi();
 				} else {
 				textField_1.setText(""+iznos*kurs);
 				}
+				GUIKontroler.sacuvaj(preuzmiIzComboBox().substring(0, 3), preuzmiIzComboBox().substring(4), kurs);
 			}
 		});
 		btnKonvertuj.setBounds(158, 196, 112, 29);
@@ -106,15 +107,16 @@ public class GlavniProzor extends JFrame {
 	}
 	
 	private String preuzmiIzComboBox(){
-		String q = "";
+		String prvaZemlja = "";
+		String drugaZemlja = "";
 		for(int i=0;i<zemlje.size();i++){
 			if(comboBox.getSelectedItem().equals(zemlje.get(i).getName())){
-				q += zemlje.get(i).getCurrencyId()+"_";
+			prvaZemlja =  zemlje.get(i).getCurrencyId();
 			}
 			if(comboBox_1.getSelectedItem().equals(zemlje.get(i).getName())){
-				q +=zemlje.get(i).getCurrencyId();
+				drugaZemlja = zemlje.get(i).getCurrencyId();
 			}
 		}
-		return q;
+		return prvaZemlja+"_"+drugaZemlja;
 	}
 }

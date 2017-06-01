@@ -41,4 +41,7 @@ public class GUIKontroler {
 		JOptionPane.showMessageDialog(glavniProzor, "Ne postoje podaci o konverziji izabranih valuta");
 	}
 	
+	public static void sacuvaj(String izValuta, String uValuta, double kurs){
+		communication.sacuvajUFajl(izValuta, uValuta, kurs);
+	}
 }
