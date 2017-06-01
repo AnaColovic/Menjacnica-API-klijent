@@ -7,16 +7,30 @@ import java.util.LinkedList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import menjacnica.Zemlja;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class GlavniProzor extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
+	private JLabel lblIznos;
+	private JLabel lblIznos_1;
+	private JLabel lblIzValuteZemlje;
+	private JLabel lblUValutuZemlje;
+	private JComboBox<String> comboBox;
+	private JComboBox<String> comboBox_1;
+	private JButton btnKonvertuj;
+	LinkedList<Zemlja> zemlje = GUIKontroler.vratiZemlje();
 	/**
 	 * Create the frame.
 	 */
@@ -32,35 +46,35 @@ public class GlavniProzor extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
-		LinkedList<String> zemlje = GUIKontroler.vratiZemlje();
 		
-		JLabel lblIzValuteZemlje = new JLabel("Iz valute zemlje:");
+		
+		lblIzValuteZemlje = new JLabel("Iz valute zemlje:");
 		lblIzValuteZemlje.setBounds(30, 53, 102, 14);
 		panel.add(lblIzValuteZemlje);
 		
-		JLabel lblUValutuZemlje = new JLabel("U valutu zemlje:");
+		lblUValutuZemlje = new JLabel("U valutu zemlje:");
 		lblUValutuZemlje.setBounds(249, 53, 102, 14);
 		panel.add(lblUValutuZemlje);
 		
-		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox = new JComboBox<String>();
 		comboBox.setBounds(30, 78, 143, 20);
 		panel.add(comboBox);
 		for(int i=0;i<zemlje.size();i++){
-			comboBox.addItem(zemlje.get(i));
+			comboBox.addItem(zemlje.get(i).getName());
 		}
 		
-		JComboBox<String> comboBox_1 = new JComboBox<String>();
+		comboBox_1 = new JComboBox<String>();
 		comboBox_1.setBounds(249, 78, 143, 20);
 		panel.add(comboBox_1);
 		for(int i=0;i<zemlje.size();i++){
-			comboBox_1.addItem(zemlje.get(i));
+			comboBox_1.addItem(zemlje.get(i).getName());
 		}
 		
-		JLabel lblIznos = new JLabel("Iznos:");
+		lblIznos = new JLabel("Iznos:");
 		lblIznos.setBounds(30, 120, 46, 14);
 		panel.add(lblIznos);
 		
-		JLabel lblIznos_1 = new JLabel("Iznos:");
+		lblIznos_1 = new JLabel("Iznos:");
 		lblIznos_1.setBounds(249, 120, 46, 14);
 		panel.add(lblIznos_1);
 		
@@ -74,8 +88,33 @@ public class GlavniProzor extends JFrame {
 		panel.add(textField_1);
 		textField_1.setColumns(10);
 		
-		JButton btnKonvertuj = new JButton("Konvertuj");
+		btnKonvertuj = new JButton("Konvertuj");
+		btnKonvertuj.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				double kurs = GUIKontroler.vratiKurs(preuzmiIzComboBox());
+				System.out.println(kurs);
+				int iznos = Integer.parseInt(textField.getText());
+				if(kurs==0){
+					GUIKontroler.ispisi();
+				} else {
+				textField_1.setText(""+iznos*kurs);
+				}
+			}
+		});
 		btnKonvertuj.setBounds(158, 196, 112, 29);
 		panel.add(btnKonvertuj);
+	}
+	
+	private String preuzmiIzComboBox(){
+		String q = "";
+		for(int i=0;i<zemlje.size();i++){
+			if(comboBox.getSelectedItem().equals(zemlje.get(i).getName())){
+				q += zemlje.get(i).getCurrencyId()+"_";
+			}
+			if(comboBox_1.getSelectedItem().equals(zemlje.get(i).getName())){
+				q +=zemlje.get(i).getCurrencyId();
+			}
+		}
+		return q;
 	}
 }

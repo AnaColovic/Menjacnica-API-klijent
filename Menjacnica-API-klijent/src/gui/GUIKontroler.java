@@ -3,13 +3,15 @@ package gui;
 import java.awt.EventQueue;
 import java.util.LinkedList;
 
+import javax.swing.JOptionPane;
+
 import menjacnica.CurrencyConverterCommunication;
 import menjacnica.Zemlja;
 
 public class GUIKontroler {
 	private static GlavniProzor glavniProzor;
 	private static CurrencyConverterCommunication communication;
-	private static LinkedList<String> zemlje;
+	private static LinkedList<Zemlja> zemlje;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -27,8 +29,16 @@ public class GUIKontroler {
 		});
 	}
 	
-	public static LinkedList<String> vratiZemlje(){
+	public static LinkedList<Zemlja> vratiZemlje(){
 		return zemlje;
+	}
+	
+	public static double vratiKurs(String q){
+		return communication.konverzija(q);
+	}
+	
+	public static void ispisi(){
+		JOptionPane.showMessageDialog(glavniProzor, "Ne postoje podaci o konverziji izabranih valuta");
 	}
 	
 }
